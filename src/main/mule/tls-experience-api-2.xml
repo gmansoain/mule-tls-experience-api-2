@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<mule xmlns:tls="http://www.mulesoft.org/schema/mule/tls" xmlns:http="http://www.mulesoft.org/schema/mule/http"
+	xmlns="http://www.mulesoft.org/schema/mule/core"
+	xmlns:doc="http://www.mulesoft.org/schema/mule/documentation" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.mulesoft.org/schema/mule/core http://www.mulesoft.org/schema/mule/core/current/mule.xsd
+http://www.mulesoft.org/schema/mule/http http://www.mulesoft.org/schema/mule/http/current/mule-http.xsd
+http://www.mulesoft.org/schema/mule/tls http://www.mulesoft.org/schema/mule/tls/current/mule-tls.xsd">
+	<tls:context name="TLS_Context" doc:name="TLS Context" doc:id="8dd34f18-4c39-4787-91c8-f78332e7276d" >
+		<tls:key-store type="jks" path="keystore/keystore.jks" alias="server" keyPassword="mule1234" password="mule1234" />
+	</tls:context>
+	<http:listener-config name="HTTP_Listener_config" doc:name="HTTP Listener config" doc:id="705aa085-703e-4397-9cc6-57fd0c97b081" >
+		<http:listener-connection protocol="HTTPS" host="0.0.0.0" port="8081" tlsContext="TLS_Context" />
+	</http:listener-config>
+	<flow name="tls-experience-api-2Flow" doc:id="15f1f5c1-6bb8-4150-b321-f4d680836490" >
+		<http:listener doc:name="Listener" doc:id="15e77cb9-b906-4fc5-a3c2-16d89c40a2ff" config-ref="HTTP_Listener_config" path="/hello" allowedMethods="GET"/>
+		<logger level="INFO" doc:name="Logger" doc:id="c3d16f1f-8b01-49d6-b7cf-6e8c70791c65" message="#[attributes]"/>
+		<set-payload value='#["Hello with Last Mile Security"]' doc:name="Set Payload" doc:id="fad0b645-1c88-4c62-b917-e8de8ad31c87" />
+	</flow>
+</mule>
